@@ -36,9 +36,10 @@ class ViewController: UIViewController {
     **/
     @IBAction func calculateTip(_ sender: AnyObject) {
         
-        recalculateTip()
+        let selectedNumberOfPeople = 1
+        recalculateTip(numberOfPeople: selectedNumberOfPeople)
     }
-    
+
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -52,24 +53,44 @@ class ViewController: UIViewController {
         //Setting the default tip amount in Tippy main screen
         tipControl.selectedSegmentIndex = selectedDefaultTipPosition
         
-        //Recalculate the tip based on new tip selection from settings
-        recalculateTip()
+        //Check if number of people is > 1
+        let selectedNumberOfPeople = defaults.integer(forKey: "numOfPeopleKey")
         
+        //Recalculate the tip based on new tip selection from settings
+        recalculateTip(numberOfPeople: selectedNumberOfPeople)
     }
     
-    func recalculateTip() {
+    func recalculateTip(numberOfPeople: Int) {
         let tipPercentages = [0.18, 0.20, 0.25]
         let billAmount = Double(billField.text!) ?? 0
         let tipAmount = billAmount * tipPercentages[tipControl.selectedSegmentIndex]
-        let totalAmount = billAmount + tipAmount
         
-        tipLabel.text = String(format: "$%.2f", tipAmount)
+        //Checking if there is more than 1 person, to split the tip amount, based on data from Settings and seeting the tip value
+        if (numberOfPeople > 1) {
+            let tipPerPerson = (tipAmount/Double(numberOfPeople))
+             tipLabel.text = String(format: "$%.2f", tipPerPerson)
+            
+        } else {
+            tipLabel.text = String(format: "$%.2f", tipAmount)
+        }
+        
+        //Setting the total amount based on the tip amount and the bill amount
+        let totalAmount = billAmount + tipAmount
         totalLabel.text = String(format: "$%.2f", totalAmount)
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("view did appear")
+        
+        // Animation Block
+        self.tipLabel.alpha = 0
+        self.totalLabel.alpha = 0
+        UIView.animate(withDuration: 0.6, animations: {
+            self.tipLabel.alpha = 1
+            self.totalLabel.alpha = 1
+        })
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -81,6 +102,6 @@ class ViewController: UIViewController {
         super.viewDidDisappear(animated)
         print("view did disappear")
     }
-
+    
 }
 
