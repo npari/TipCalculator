@@ -87,7 +87,8 @@ class SettingsViewController: UIViewController {
         defaults.synchronize()
         print(selectedDefaultTipPosition)
         
+        }
+        
     }
     
     
-}
