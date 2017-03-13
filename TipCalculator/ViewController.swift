@@ -19,7 +19,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        //Making the bill amount field the first responder with keyboard on
+       /* Making bill amount field the first responder with keyboard on,
+        * after the view has loaded
+        */
         billField.becomeFirstResponder()
     }
 
@@ -48,9 +50,18 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
         print("view will appear")
         
-        //Extracting the default tip amount from Settings
         let defaults = UserDefaults.standard
-        let selectedDefaultTipPosition = defaults.integer(forKey: "defaultTipPercentageKey")
+
+        let shouldResetBill = defaults.bool(forKey: "resetBillAmountKey")
+        if(shouldResetBill) {
+            billField.text=""
+        } else {
+            billField.text = defaults.string(forKey: "billFieldText")
+        }
+
+        
+        //Extracting the default tip amount from Settings
+               let selectedDefaultTipPosition = defaults.integer(forKey: "defaultTipPercentageKey")
         print(selectedDefaultTipPosition)
         
         //Setting the default tip amount in Tippy main screen
@@ -68,6 +79,11 @@ class ViewController: UIViewController {
         let billAmount = Double(billField.text!) ?? 0
         let tipAmount = billAmount * tipPercentages[tipControl.selectedSegmentIndex]
         
+        //Storing the bill amount in defaults
+        let defaults = UserDefaults.standard
+        defaults.set(billField.text, forKey: "billFieldText")
+        
+        
         //Checking if there is more than 1 person, to split the tip amount, based on data from Settings and seeting the tip value
         if (numberOfPeople > 1) {
             let tipPerPerson = (tipAmount/Double(numberOfPeople))
@@ -83,6 +99,7 @@ class ViewController: UIViewController {
 
     }
     
+        
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("view did appear")
