@@ -60,6 +60,8 @@ class ViewController: UIViewController {
         let shouldResetBill = defaults.bool(forKey: "resetBillAmountKey")
         if(shouldResetBill) {
             billField.text=""
+            //Setting the resetBillAmountKey as false again
+            defaults.set(false, forKey: "resetBillAmountKey")
         } else {
             billField.text = defaults.string(forKey: "billFieldText")
         }

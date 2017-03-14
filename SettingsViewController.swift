@@ -10,49 +10,58 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     
-    
     @IBOutlet weak var defaultTipPercentageControl: UISegmentedControl!
     @IBOutlet weak var numOfPeopleField: UILabel!
     @IBOutlet weak var changePeopleNumControl: UIStepper!
     @IBOutlet weak var themeControl: UISegmentedControl!
     
+    //Labels in Settings Page
+    
+    @IBOutlet weak var percentLabel: UILabel!
+    @IBOutlet weak var peopleLabel: UILabel!
+    @IBOutlet weak var templateLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        loadSettingScreenWithValues()
+        //Load the default options in Settings Page on view load
+        loadDefaultSettingScreen()
     }
     
-    /**
-     * loadSettingScreenWithValues will load the values into the Settings part based on what user
-     * had previously set
-    **/
-    func loadSettingScreenWithValues() {
-        
-        //As soon as the Setting page loads, following will be done
+    /*******************************************************
+     * Methods to load the default options in Settings Page
+     *******************************************************/
+    func loadDefaultSettingScreen() {
+        setDefaultTip()
+        setDefaultPeople()
+        setDefaultTheme()
+    }
+    
+    //Default Settings for Tippy
+    //Setting default tip percentage
+    func setDefaultTip() {
         let defaults = UserDefaults.standard
-        
-        //Setting the theme based on default theme
-        let selectedTippyThemeVal = defaults.integer(forKey: "defaultTippyThemeKey")
-        themeControl.selectedSegmentIndex = selectedTippyThemeVal
-        
-        updateTheme(selectedTippyThemePosition: selectedTippyThemeVal)
-        
-        //Setting default tip percentage
         let selectedDefaultTipPosition = defaults.integer(forKey: "defaultTipPercentageKey")
-        print("Default Values set by user:")
-        print(selectedDefaultTipPosition)
         defaultTipPercentageControl.selectedSegmentIndex = selectedDefaultTipPosition
-        
-        //Setting the default number of people in Setting Screen as set by user
+    }
+    
+    //Setting the default number of people in Setting Screen as set by user
+    func setDefaultPeople() {
+        let defaults = UserDefaults.standard
         let selectedNumberOfPeople = defaults.double(forKey: "numOfPeopleKey")
-        print(selectedNumberOfPeople)
         numOfPeopleField.text = String(format: "%.0f", selectedNumberOfPeople)
         changePeopleNumControl.value = selectedNumberOfPeople
-        print(numOfPeopleField.text)
     }
     
+    //Setting the theme based on default theme set in the app delegate
+    func setDefaultTheme() {
+        let defaults = UserDefaults.standard
+        let selectedTippyThemeVal = defaults.integer(forKey: "defaultTippyThemeKey")
+        themeControl.selectedSegmentIndex = selectedTippyThemeVal
+        updateTheme(selectedTippyThemePosition: selectedTippyThemeVal)
+    }
+
+    //This function is used to update the theme based on selection by the user
     func updateTheme(selectedTippyThemePosition: Int) {
         if(selectedTippyThemePosition == 1) {
             //Set light color theme
@@ -64,22 +73,32 @@ class SettingsViewController: UIViewController {
         }
     }
     
+    //This function is used to load the dark theme
     func loadDarkTheme() {
         //Main view
         self.view.backgroundColor = UIColor.darkGray
     }
     
+    //This function is used to load the light theme
     func loadLightTheme() {
         //Main view
         self.view.backgroundColor = UIColor.white
     }
 
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    /*******************************************************
+     * Methods to handle various options in Settings Page
+     *******************************************************/
+    
+    //Handle setting of tip percentage
+    @IBAction func setDefaultTipPercentage(_ sender: AnyObject) {
+        
+        let selectedDefaultTipPosition = defaultTipPercentageControl.selectedSegmentIndex
+        let defaults = UserDefaults.standard
+        defaults.set(selectedDefaultTipPosition, forKey: "defaultTipPercentageKey")
+        defaults.synchronize()
     }
     
+    //Handle setting of number of people
     @IBAction func setNumberOfPeople(_ sender: UIStepper) {
         
         //Extracting the number of people from stepper
@@ -92,54 +111,26 @@ class SettingsViewController: UIViewController {
         let defaults = UserDefaults.standard
         defaults.set(numOfPeopleFromStepper, forKey: "numOfPeopleKey")
         defaults.synchronize()
-
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    /**
-     * setDefaultTipPercentage method will save the default 
-     * tip percentage to NSUserDefaults
-    **/
-    @IBAction func setDefaultTipPercentage(_ sender: AnyObject) {
         
-        let selectedDefaultTipPosition = defaultTipPercentageControl.selectedSegmentIndex
-        let defaults = UserDefaults.standard
-        defaults.set(selectedDefaultTipPosition, forKey: "defaultTipPercentageKey")
-        defaults.synchronize()
-        print(selectedDefaultTipPosition)
-        
-        }
-    
-    
+    }
+
+    //Handle setting of Tippy theme
     @IBAction func changeTippyTemplate(_ sender: AnyObject) {
         
-        //Store the template selection in Defaults
         let selectedTippyThemePosition = themeControl.selectedSegmentIndex
         let defaults = UserDefaults.standard
         defaults.set(selectedTippyThemePosition, forKey:"defaultTippyThemeKey")
         defaults.synchronize()
-        print("Theme selected:")
-        print(selectedTippyThemePosition)
         
-        //Save theme selection as default option
-        
-        //reloading template for settings
-        loadSettingScreenWithValues()
-        
-        
+        //Reloading Settings page with new theme selection
+        loadDefaultSettingScreen()
     }
     
-        
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
+    
+}
     
     

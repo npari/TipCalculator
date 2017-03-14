@@ -82,10 +82,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func checkIfMoreThanTenMins(storedTime: Date)  -> Bool {
         
         let currentTime = NSDate()
-        let timeGap = currentTime.timeIntervalSince(storedTime)
+        print("Stored Time")
+        print(storedTime)
+        print("Current Time")
+        print(currentTime)
+        let timeGap = Int(currentTime.timeIntervalSince(storedTime))
         print(Int(timeGap))
-        if(timeGap > 600.00){
+        if(timeGap > 600){
             return true
+            
+            //Reset the 
         }
         return false
     }
