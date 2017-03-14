@@ -14,6 +14,8 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var defaultTipPercentageControl: UISegmentedControl!
     @IBOutlet weak var numOfPeopleField: UILabel!
     @IBOutlet weak var changePeopleNumControl: UIStepper!
+    @IBOutlet weak var themeControl: UISegmentedControl!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +30,16 @@ class SettingsViewController: UIViewController {
     **/
     func loadSettingScreenWithValues() {
         
+        //As soon as the Setting page loads, following will be done
         let defaults = UserDefaults.standard
         
-        //Setting the default tip percentage in Settings Screen as set by user
+        //Setting the theme based on default theme
+        let selectedTippyThemeVal = defaults.integer(forKey: "defaultTippyThemeKey")
+        themeControl.selectedSegmentIndex = selectedTippyThemeVal
+        
+        updateTheme(selectedTippyThemePosition: selectedTippyThemeVal)
+        
+        //Setting default tip percentage
         let selectedDefaultTipPosition = defaults.integer(forKey: "defaultTipPercentageKey")
         print("Default Values set by user:")
         print(selectedDefaultTipPosition)
@@ -43,6 +52,28 @@ class SettingsViewController: UIViewController {
         changePeopleNumControl.value = selectedNumberOfPeople
         print(numOfPeopleField.text)
     }
+    
+    func updateTheme(selectedTippyThemePosition: Int) {
+        if(selectedTippyThemePosition == 1) {
+            //Set light color theme
+            loadLightTheme()
+            
+        } else if(selectedTippyThemePosition == 0) {
+            //Set dark color theme
+            loadDarkTheme()
+        }
+    }
+    
+    func loadDarkTheme() {
+        //Main view
+        self.view.backgroundColor = UIColor.darkGray
+    }
+    
+    func loadLightTheme() {
+        //Main view
+        self.view.backgroundColor = UIColor.white
+    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -88,6 +119,26 @@ class SettingsViewController: UIViewController {
         print(selectedDefaultTipPosition)
         
         }
+    
+    
+    @IBAction func changeTippyTemplate(_ sender: AnyObject) {
+        
+        //Store the template selection in Defaults
+        let selectedTippyThemePosition = themeControl.selectedSegmentIndex
+        let defaults = UserDefaults.standard
+        defaults.set(selectedTippyThemePosition, forKey:"defaultTippyThemeKey")
+        defaults.synchronize()
+        print("Theme selected:")
+        print(selectedTippyThemePosition)
+        
+        //Save theme selection as default option
+        
+        //reloading template for settings
+        loadSettingScreenWithValues()
+        
+        
+    }
+    
         
     }
     

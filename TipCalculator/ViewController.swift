@@ -50,8 +50,13 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
         print("view will appear")
         
+        //As soon as the main page loads, following will be done
         let defaults = UserDefaults.standard
-
+        
+        //Setting the theme based on default theme
+        let selectedTippyThemeVal = defaults.integer(forKey: "defaultTippyThemeKey")
+        updateTheme(selectedTippyThemePosition: selectedTippyThemeVal)
+        
         let shouldResetBill = defaults.bool(forKey: "resetBillAmountKey")
         if(shouldResetBill) {
             billField.text=""
@@ -97,6 +102,27 @@ class ViewController: UIViewController {
         let totalAmount = billAmount + tipAmount
         totalLabel.text = String(format: "$%.2f", totalAmount)
 
+    }
+    
+    func updateTheme(selectedTippyThemePosition: Int) {
+        if(selectedTippyThemePosition == 1) {
+            //Set light color theme
+            loadLightTheme()
+            
+        } else if(selectedTippyThemePosition == 0) {
+            //Set dark color theme
+            loadDarkTheme()
+        }
+    }
+    
+    func loadDarkTheme() {
+        //Main view
+        self.view.backgroundColor = UIColor.darkGray
+    }
+    
+    func loadLightTheme() {
+        //Main view
+        self.view.backgroundColor = UIColor.white
     }
     
         

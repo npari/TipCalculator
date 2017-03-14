@@ -189,8 +189,28 @@
                                 <color key="highlightedColor" red="0.9836989116" green="1" blue="0.97928807449999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="shadowColor" cocoaTouchSystemColor="lightTextColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Switch Template" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="u4z-nw-RXI">
+                                <frame key="frameInset" minX="16" minY="319" width="166" height="66"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" red="1" green="0.68047091719999997" blue="0.01737822537" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="ovD-of-fAG">
+                                <frame key="frameInset" minX="184" minY="338" width="167" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.85595624299999995" blue="0.1513445829" alpha="1" colorSpace="calibratedRGB"/>
+                                <segments>
+                                    <segment title="Dark"/>
+                                    <segment title="Light"/>
+                                </segments>
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <action selector="changeTippyTemplate:" destination="71n-lj-XQT" eventType="valueChanged" id="kbX-f3-9VC"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
-                        <color key="backgroundColor" white="0.29186055208074635" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                         <color key="tintColor" red="0.068561113376977123" green="0.47351406922751615" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <rect key="contentStretch" x="0.0" y="0.0" width="0.80000000000000004" height="0.80000000000000004"/>
                     </view>
@@ -199,6 +219,7 @@
                         <outlet property="changePeopleNumControl" destination="mWg-pG-gUJ" id="tOf-v2-kAY"/>
                         <outlet property="defaultTipPercentageControl" destination="8d9-h9-P1Z" id="qBc-Rs-ffh"/>
                         <outlet property="numOfPeopleField" destination="Zv2-Ne-T3U" id="Qaj-go-OLQ"/>
+                        <outlet property="themeControl" destination="ovD-of-fAG" id="YIs-P0-t0Z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xzm-YL-rqZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
