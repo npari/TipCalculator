@@ -4,7 +4,7 @@
 
 Submitted by: **Nithya Pari**
 
-Time spent: **6** hours spent in total
+Time spent: **8** hours spent in total
 
 ## User Stories
 
@@ -21,7 +21,7 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [x] Split tip between more than one user (upto 10 people) using spinner in Settings!
+- [x] Split tip between more than one user (upto 10 people) using spinner in settings
 - [x] Designed the theme and User Interface for the main and settings pages
 - [x] Switch between dark and light themes based on the settings menu
 - [x] Tippy Icon added to home screen in iPhone
