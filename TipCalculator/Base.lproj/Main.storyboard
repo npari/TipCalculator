@@ -219,6 +219,9 @@
                         <outlet property="changePeopleNumControl" destination="mWg-pG-gUJ" id="tOf-v2-kAY"/>
                         <outlet property="defaultTipPercentageControl" destination="8d9-h9-P1Z" id="qBc-Rs-ffh"/>
                         <outlet property="numOfPeopleField" destination="Zv2-Ne-T3U" id="Qaj-go-OLQ"/>
+                        <outlet property="peopleLabel" destination="ZHv-lk-3uG" id="QD4-tW-Tx3"/>
+                        <outlet property="percentLabel" destination="U5O-gM-ugk" id="BH0-o2-DVL"/>
+                        <outlet property="templateLabel" destination="u4z-nw-RXI" id="daM-8R-fQ8"/>
                         <outlet property="themeControl" destination="ovD-of-fAG" id="YIs-P0-t0Z"/>
                     </connections>
                 </viewController>
