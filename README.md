@@ -33,8 +33,8 @@ Here's a walkthrough of implemented user stories:
 
 <img src='https://github.com/npari/TipCalculator/blob/master/Tippy.gif' title='Tippy Video Walkthrough' width='' alt='Nithya Pari Tippy Video Walkthrough' />
 
-Tippy Homescreen
-<img src='https://github.com/npari/TipCalculator/blob/master/TippyHomeScreen.png' title='Tippy Home Screen' width='300' height='500' alt='Nithya Pari Tippy Icon' /> <br>
+Tippy Homescreen <br>
+<img src='https://github.com/npari/TipCalculator/blob/master/TippyHomeScreen.png' title='Tippy Home Screen' width='400' height='600' alt='Nithya Pari Tippy Icon' /> <br>
 
 Final Tippy Gif
 
