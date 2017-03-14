@@ -24,6 +24,8 @@ The following **additional** features are implemented:
 - [x] Split tip between more than one user (upto 10 people) using spinner in Settings!
 - [x] Designed the theme and User Interface for the main and settings pages
 - [x] Switch between dark and light themes based on the settings menu
+- [x] Tippy Icon added to home screen in iPhone
+
 
 ## Video Walkthrough 
 
