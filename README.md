@@ -33,6 +33,10 @@ Here's a walkthrough of implemented user stories:
 
 <img src='https://github.com/npari/TipCalculator/blob/master/Tippy.gif' title='Tippy Video Walkthrough' width='' alt='Nithya Pari Tippy Video Walkthrough' />
 
+Final Tippy Gif
+
+<img src='https://github.com/npari/TipCalculator/blob/master/TippyFinal.gif' title='Tippy Final Video Walkthrough'>
+
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
