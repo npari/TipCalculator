@@ -41,6 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let defaults = UserDefaults.standard
         let resetBillAmountFlag = checkToResetBillAmount()
         defaults.set(resetBillAmountFlag, forKey: "resetBillAmountKey")
+        
+        //Setting default theme as dark - 0
+        let selectedTippyThemePosition:Int = 0
+        defaults.set(selectedTippyThemePosition, forKey:"defaultTippyThemeKey")
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
