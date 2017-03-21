@@ -38,7 +38,12 @@ Tippy Homescreen <br><br>
 
 Final Tippy Gif
 
-<img src='https://github.com/npari/TipCalculator/blob/master/TippyFinal.gif' title='Tippy Final Video Walkthrough'>
+<img src='https://github.com/npari/TipCalculator/blob/master/TippyFinal.gif' title='Tippy Final Video Walkthrough'> <br>
+
+Currency based on Locale set in mobile device 
+
+<img src='https://github.com/npari/TipCalculator/blob/master/TippyLocaleCurrencyAndSeperator.gif' title='Locale Currency'><br>
+
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
