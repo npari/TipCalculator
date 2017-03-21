@@ -19,13 +19,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-       /* Making bill amount field the first responder with keyboard on,
-        * after the view has loaded
-        */
+       //Making bill amount field the first responder with keyboard on, after the view has loaded
         billField.becomeFirstResponder()
         
-        //Storing the current locale curreny in defaul on app load
-        storeCurrentLocaleCurrency()
     }
     
     override func didReceiveMemoryWarning() {
@@ -65,6 +61,53 @@ class ViewController: UIViewController {
         recalculateTip(numberOfPeople: selectedNumberOfPeople)
     }
     
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("view did appear")
+        
+        //Animate fields in main page
+        animateTipAndTotal()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("view will disappear")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("view did disappear")
+    }
+    
+    /*****************************************************
+     * Methods to calculate tip, total in Main page
+     ******************************************************/
+    
+    //This method recalculates the tip based on number of people
+    func recalculateTip(numberOfPeople: Int) {
+        let defaults = UserDefaults.standard
+        let tipPercentages = [0.18, 0.20, 0.25]
+        let billAmount = Double(billField.text!) ?? 0
+        let tipAmount = billAmount * tipPercentages[tipControl.selectedSegmentIndex]
+        
+        //Storing the bill amount in defaults
+        defaults.set(billField.text, forKey: "billFieldText")
+        
+        //Calculating tip per person
+        if (numberOfPeople > 1) {
+            let tipPerPerson = (tipAmount/Double(numberOfPeople))
+            tipLabel.text = convertToLocaleCurrency(money: tipPerPerson)
+        } else {
+            tipLabel.text = convertToLocaleCurrency(money: tipAmount)
+        }
+        
+        //Calculating and setting the total amount based on bill and tip
+        let totalAmount = billAmount + tipAmount
+        totalLabel.text = convertToLocaleCurrency(money: totalAmount)
+    }
+    
+    //This method loads the default tip percentage in main screen from settings
     func loadDefaultTip() {
         let defaults = UserDefaults.standard
         
@@ -76,6 +119,7 @@ class ViewController: UIViewController {
         tipControl.selectedSegmentIndex = selectedDefaultTipPosition
     }
     
+    //This method resets the bill amount in the main screen
     func resetBillAmount() {
         let defaults = UserDefaults.standard
         
@@ -89,77 +133,29 @@ class ViewController: UIViewController {
         }
     }
     
-    func recalculateTip(numberOfPeople: Int) {
-        let defaults = UserDefaults.standard
-        let tipPercentages = [0.18, 0.20, 0.25]
-        let billAmount = Double(billField.text!) ?? 0
-        let tipAmount = billAmount * tipPercentages[tipControl.selectedSegmentIndex]
+    /*****************************************************
+     * Methods to set currency & seperator to amounts
+     ******************************************************/
+    
+    //This method creates the number formatter that applies the current locale and corresponding currency
+    func getNumberFormatter() -> NumberFormatter {
         
-        //Storing the bill amount in defaults
-        defaults.set(billField.text, forKey: "billFieldText")
+        let numFormatter = NumberFormatter()
+        numFormatter.numberStyle = .currency
+        numFormatter.locale = Locale.current
+        numFormatter.usesGroupingSeparator = true
         
-        //Getting the current currency from defaults
-        let currentCurrency = defaults.string(forKey: "currentCurrencyKey")
-        
-        //Calculating tip per person
-        if (numberOfPeople > 1) {
-            let tipPerPerson = (tipAmount/Double(numberOfPeople))
-             tipLabel.text = String(format: currentCurrency!+" %.2f", tipPerPerson)
-            
-        } else {
-            tipLabel.text = String(format: currentCurrency!+" %.2f", tipAmount)
-        }
-        
-        //Calculating and setting the total amount based on bill and tip
-        let totalAmount = billAmount + tipAmount
-        totalLabel.text = String(format: currentCurrency!+" %.2f", totalAmount)
+        return numFormatter
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print("view did appear")
+    //This method converts and returns any amount into a string after appending the local currency icon and using grouping separator
+    func convertToLocaleCurrency(money: Double) -> String {
+        let numFormatter = getNumberFormatter()
+        let val = numFormatter.string(from: NSNumber(value: money))
         
-        //Animate fields in main page
-        animateTipAndTotal()
-        
+        return val!
     }
-    
-    func animateTipAndTotal() {
-        //Animate the tip and total fields
-        self.tipLabel.alpha = 0
-        self.totalLabel.alpha = 0
-        UIView.animate(withDuration: 0.6, animations: {
-            self.tipLabel.alpha = 1
-            self.totalLabel.alpha = 1
-        })
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        print("view will disappear")
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        print("view did disappear")
-    }
-    
-    //This method stores the currency corresponding to the current locale
-    func storeCurrentLocaleCurrency() {
-        
-        //Getting the current locale of the mobile device
-        let currentLocale = Locale.current
-        
-        //Getting the currency corresponding to the locale
-        let currentCurrency = currentLocale.currencyCode
-        
-        print(currentLocale)
-        print(currentCurrency)
-        
-        //Storing default currency
-        let defaults = UserDefaults.standard
-        defaults.set(currentCurrency, forKey: "currentCurrencyKey")
-    }
+
     
     /*****************************************************
     * Methods related to updating the theme in Main page
@@ -192,6 +188,20 @@ class ViewController: UIViewController {
     //This method loads the light colored theme
     func loadLightTheme() {
         self.view.backgroundColor = UIColor.white
+    }
+    
+    /*****************************************************
+     * Methods for animation in Main page
+     ******************************************************/
+    
+    //This method animates the tip and total amounts in the main page
+    func animateTipAndTotal() {
+        self.tipLabel.alpha = 0
+        self.totalLabel.alpha = 0
+        UIView.animate(withDuration: 0.6, animations: {
+            self.tipLabel.alpha = 1
+            self.totalLabel.alpha = 1
+        })
     }
 
     

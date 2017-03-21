@@ -54,19 +54,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         storeCurrentTime(reason: "App Termination")
     }
     
-    /**
-     * This method is used to store the current date
-     **/
+    //This method is used to store the current date
     func storeCurrentTime(reason: String) {
-        
         let defaults = UserDefaults.standard
         let currentTime = NSDate()
         defaults.set(currentTime, forKey: "currentTimeKey")
         defaults.synchronize()
-        print("App current time stored for : "+reason)
-        print(currentTime)
     }
     
+    //This method is used to reset the bill amount beyond ten minutes
     func checkToResetBillAmount()  -> Bool {
         
         let defaults = UserDefaults.standard
@@ -75,28 +71,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if(storedTime != nil) {
             shouldResetBill = checkIfMoreThanTenMins(storedTime: storedTime as! Date)
         }
-        
         return shouldResetBill
     }
     
+    //This method checks if more than ten minutes had passed after app went to background
     func checkIfMoreThanTenMins(storedTime: Date)  -> Bool {
-        
+
         let currentTime = NSDate()
-        print("Stored Time")
-        print(storedTime)
-        print("Current Time")
-        print(currentTime)
         let timeGap = Int(currentTime.timeIntervalSince(storedTime))
-        print(Int(timeGap))
         if(timeGap > 600){
             return true
-            
-            //Reset the 
         }
         return false
     }
-    
-
-
 }
 
