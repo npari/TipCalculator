@@ -23,8 +23,11 @@ class ViewController: UIViewController {
         * after the view has loaded
         */
         billField.becomeFirstResponder()
+        
+        //Storing the current locale curreny in defaul on app load
+        storeCurrentLocaleCurrency()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -34,17 +37,12 @@ class ViewController: UIViewController {
         view.endEditing(true)
     }
 
-    /**
-     * calculateTip method calculates the tip whenever
-     * the bill amount changes or when the user selects
-     *
-    **/
+    // This method calculates tip whenever bill amount changes
     @IBAction func calculateTip(_ sender: AnyObject) {
         
         let selectedNumberOfPeople = 1
         recalculateTip(numberOfPeople: selectedNumberOfPeople)
     }
-
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -53,9 +51,33 @@ class ViewController: UIViewController {
         //As soon as the main page loads, following will be done
         let defaults = UserDefaults.standard
         
+        //Resetting the bill amount based on time > 10 mins
+        resetBillAmount()
+        
         //Setting the theme based on default theme
-        let selectedTippyThemeVal = defaults.integer(forKey: "defaultTippyThemeKey")
-        updateTheme(selectedTippyThemePosition: selectedTippyThemeVal)
+        loadDefaultTheme()
+        
+        //Setting the tip % based on default tip %
+        loadDefaultTip()
+        
+        //Recalculate the tip based on new tip selection from settings
+        let selectedNumberOfPeople = defaults.integer(forKey: "numOfPeopleKey")
+        recalculateTip(numberOfPeople: selectedNumberOfPeople)
+    }
+    
+    func loadDefaultTip() {
+        let defaults = UserDefaults.standard
+        
+        //Extracting the default tip amount from Settings
+        let selectedDefaultTipPosition = defaults.integer(forKey: "defaultTipPercentageKey")
+        print(selectedDefaultTipPosition)
+        
+        //Setting the default tip amount in Tippy main screen
+        tipControl.selectedSegmentIndex = selectedDefaultTipPosition
+    }
+    
+    func resetBillAmount() {
+        let defaults = UserDefaults.standard
         
         let shouldResetBill = defaults.bool(forKey: "resetBillAmountKey")
         if(shouldResetBill) {
@@ -65,74 +87,45 @@ class ViewController: UIViewController {
         } else {
             billField.text = defaults.string(forKey: "billFieldText")
         }
-
-        
-        //Extracting the default tip amount from Settings
-               let selectedDefaultTipPosition = defaults.integer(forKey: "defaultTipPercentageKey")
-        print(selectedDefaultTipPosition)
-        
-        //Setting the default tip amount in Tippy main screen
-        tipControl.selectedSegmentIndex = selectedDefaultTipPosition
-        
-        //Check if number of people is > 1
-        let selectedNumberOfPeople = defaults.integer(forKey: "numOfPeopleKey")
-        
-        //Recalculate the tip based on new tip selection from settings
-        recalculateTip(numberOfPeople: selectedNumberOfPeople)
     }
     
     func recalculateTip(numberOfPeople: Int) {
+        let defaults = UserDefaults.standard
         let tipPercentages = [0.18, 0.20, 0.25]
         let billAmount = Double(billField.text!) ?? 0
         let tipAmount = billAmount * tipPercentages[tipControl.selectedSegmentIndex]
         
         //Storing the bill amount in defaults
-        let defaults = UserDefaults.standard
         defaults.set(billField.text, forKey: "billFieldText")
         
+        //Getting the current currency from defaults
+        let currentCurrency = defaults.string(forKey: "currentCurrencyKey")
         
-        //Checking if there is more than 1 person, to split the tip amount, based on data from Settings and seeting the tip value
+        //Calculating tip per person
         if (numberOfPeople > 1) {
             let tipPerPerson = (tipAmount/Double(numberOfPeople))
-             tipLabel.text = String(format: "$%.2f", tipPerPerson)
+             tipLabel.text = String(format: currentCurrency!+" %.2f", tipPerPerson)
             
         } else {
-            tipLabel.text = String(format: "$%.2f", tipAmount)
+            tipLabel.text = String(format: currentCurrency!+" %.2f", tipAmount)
         }
         
-        //Setting the total amount based on the tip amount and the bill amount
+        //Calculating and setting the total amount based on bill and tip
         let totalAmount = billAmount + tipAmount
-        totalLabel.text = String(format: "$%.2f", totalAmount)
-
+        totalLabel.text = String(format: currentCurrency!+" %.2f", totalAmount)
     }
     
-    func updateTheme(selectedTippyThemePosition: Int) {
-        if(selectedTippyThemePosition == 1) {
-            //Set light color theme
-            loadLightTheme()
-            
-        } else if(selectedTippyThemePosition == 0) {
-            //Set dark color theme
-            loadDarkTheme()
-        }
-    }
-    
-    func loadDarkTheme() {
-        //Main view
-        self.view.backgroundColor = UIColor.darkGray
-    }
-    
-    func loadLightTheme() {
-        //Main view
-        self.view.backgroundColor = UIColor.white
-    }
-    
-        
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("view did appear")
         
-        // Animation Block
+        //Animate fields in main page
+        animateTipAndTotal()
+        
+    }
+    
+    func animateTipAndTotal() {
+        //Animate the tip and total fields
         self.tipLabel.alpha = 0
         self.totalLabel.alpha = 0
         UIView.animate(withDuration: 0.6, animations: {
@@ -150,6 +143,57 @@ class ViewController: UIViewController {
         super.viewDidDisappear(animated)
         print("view did disappear")
     }
+    
+    //This method stores the currency corresponding to the current locale
+    func storeCurrentLocaleCurrency() {
+        
+        //Getting the current locale of the mobile device
+        let currentLocale = Locale.current
+        
+        //Getting the currency corresponding to the locale
+        let currentCurrency = currentLocale.currencyCode
+        
+        print(currentLocale)
+        print(currentCurrency)
+        
+        //Storing default currency
+        let defaults = UserDefaults.standard
+        defaults.set(currentCurrency, forKey: "currentCurrencyKey")
+    }
+    
+    /*****************************************************
+    * Methods related to updating the theme in Main page
+    ******************************************************/
+    
+    //This method loads the default theme based on Settings
+    func loadDefaultTheme() {
+        //As soon as the main page loads, following will be done
+        let defaults = UserDefaults.standard
+        
+        //Setting the theme based on default theme
+        let selectedTippyThemeVal = defaults.integer(forKey: "defaultTippyThemeKey")
+        updateTheme(selectedTippyThemePosition: selectedTippyThemeVal)
+    }
+
+    //This method updates the theme based on user selection
+    func updateTheme(selectedTippyThemePosition: Int) {
+        if(selectedTippyThemePosition == 1) {
+            loadLightTheme()
+        } else if(selectedTippyThemePosition == 0) {
+            loadDarkTheme()
+        }
+    }
+    
+    //This method loads the dark colored theme
+    func loadDarkTheme() {
+        self.view.backgroundColor = UIColor.darkGray
+    }
+    
+    //This method loads the light colored theme
+    func loadLightTheme() {
+        self.view.backgroundColor = UIColor.white
+    }
+
     
 }
 
