@@ -4,7 +4,7 @@
 
 Submitted by: **Nithya Pari**
 
-Time spent: **8** hours spent in total
+Time spent: **9** hours spent in total
 
 ## User Stories
 
@@ -31,20 +31,23 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
+## Basic Tippy Demo
 <img src='https://github.com/npari/TipCalculator/blob/master/Tippy.gif' title='Tippy Video Walkthrough' width='' alt='Nithya Pari Tippy Video Walkthrough' />
 
-Tippy Homescreen <br><br>
+## Tippy Homescreen <br><br>
 <img src='https://github.com/npari/TipCalculator/blob/master/TippyHomeScreen.png' title='Tippy Home Screen' width='350' height='600' alt='Nithya Pari Tippy Icon' /> <br>
 
-Final Tippy Gif
+## Final Tippy Gif
 
 <img src='https://github.com/npari/TipCalculator/blob/master/TippyFinal.gif' title='Tippy Final Video Walkthrough'> <br>
 
-Currency based on Locale set in mobile device 
+## Currency based on Locale set in mobile device 
 
 <img src='https://github.com/npari/TipCalculator/blob/master/TippyLocaleCurrencyAndSeperator.gif' title='Locale Currency'><br>
 
+## Thousands Separator in Amounts
 
+<img src='https://github.com/npari/TipCalculator/blob/master/TippyThousandsSeperator.gif' title='Thousands Separator'>
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
